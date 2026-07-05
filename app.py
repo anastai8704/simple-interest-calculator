@@ -7,8 +7,8 @@ from simple_interest_calculator import calculate_simple_interest
 class SimpleInterestApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Interest Calculator")
-        self.root.geometry("500x380")
+        self.root.title("Simple Interest Calculator Pro")
+        self.root.geometry("420x280")
         self.root.resizable(False, False)
 
         self._build_ui()
@@ -16,80 +16,67 @@ class SimpleInterestApp:
     def _build_ui(self):
         style = ttk.Style(self.root)
         style.theme_use("clam")
-        style.configure("TButton", padding=8, font=("Segoe UI", 10, "bold"))
-        style.configure("Card.TFrame", background="#ffffff")
+        style.configure("Accent.TButton", foreground="#ffffff", background="#5b2ca5", font=("Segoe UI", 11, "bold"))
 
-        self.root.configure(bg="#eef2ff")
-
-        card = ttk.Frame(self.root, padding=24, style="Card.TFrame")
-        card.pack(expand=True, fill="both", padx=20, pady=20)
+        self.root.configure(bg="#f4f7fb")
+        self.root.geometry("460x340")
 
         title = tk.Label(
-            card,
-            text="Interest Calculator",
+            self.root,
+            text="Simple Interest Calculator Pro",
             font=("Segoe UI", 22, "bold"),
-            bg="#ffffff",
-            fg="#4c1d95",
+            bg="#f4f7fb",
+            fg="#5b2ca5",
         )
-        title.pack(anchor="w", pady=(0, 6))
+        title.pack(pady=(20, 10))
 
-        subtitle = tk.Label(
-            card,
-            text="Calculate your interest in a few simple steps",
-            font=("Segoe UI", 10),
-            bg="#ffffff",
-            fg="#6b7280",
-        )
-        subtitle.pack(anchor="w", pady=(0, 12))
+        form_frame = ttk.Frame(self.root, padding=15)
+        form_frame.pack(fill="both", expand=True)
 
-        fields = [
-            ("Principal (P)", "principal_var"),
-            ("Rate (R %)", "rate_var"),
-            ("Time in Years (N)", "time_var"),
-        ]
+        ttk.Label(form_frame, text="Principal (P)", font=("Segoe UI", 10, "bold")).grid(row=0, column=0, sticky="w", pady=4)
+        self.principal_var = tk.StringVar()
+        ttk.Entry(form_frame, textvariable=self.principal_var, width=30).grid(row=0, column=1, pady=4)
 
-        self.inputs = {}
-        for label_text, var_name in fields:
-            tk.Label(card, text=label_text, bg="#ffffff", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(8, 2))
-            var = tk.StringVar()
-            entry = ttk.Entry(card, textvariable=var, width=35)
-            entry.pack(anchor="w", pady=2)
-            self.inputs[var_name] = var
+        ttk.Label(form_frame, text="Rate (R %)", font=("Segoe UI", 10, "bold")).grid(row=1, column=0, sticky="w", pady=4)
+        self.rate_var = tk.StringVar()
+        ttk.Entry(form_frame, textvariable=self.rate_var, width=30).grid(row=1, column=1, pady=4)
 
-        self.result_var = tk.StringVar(value="Result will appear here")
-        result_frame = tk.Frame(card, bg="#f5f3ff", bd=1, relief="solid")
-        result_frame.pack(fill="x", pady=(14, 10), ipady=8)
-        tk.Label(
-            result_frame,
+        ttk.Label(form_frame, text="Time in Years (N)", font=("Segoe UI", 10, "bold")).grid(row=2, column=0, sticky="w", pady=4)
+        self.time_var = tk.StringVar()
+        ttk.Entry(form_frame, textvariable=self.time_var, width=30).grid(row=2, column=1, pady=4)
+
+        self.result_var = tk.StringVar(value="Enter values and press Calculate Result")
+        result_label = tk.Label(
+            self.root,
             textvariable=self.result_var,
             font=("Segoe UI", 12, "bold"),
-            bg="#f5f3ff",
-            fg="#0f766e",
-        ).pack(pady=8)
-
-        button = ttk.Button(card, text="Calculate Result", command=self.calculate, width=24)
-        button.pack(pady=(8, 6))
-
-        formula_label = tk.Label(
-            card,
-            text="Formula: SI = (P × R × N) / 100",
-            font=("Segoe UI", 9),
-            bg="#ffffff",
-            fg="#7c3aed",
+            bg="#f4f7fb",
+            fg="#5b2ca5",
+            wraplength=420,
+            justify="center",
         )
-        formula_label.pack(anchor="w", pady=(6, 0))
+        result_label.pack(pady=(10, 0))
 
-        self.root.bind("<Return>", lambda event: self.calculate())
+        ttk.Button(
+            self.root,
+            text="Calculate Result",
+            command=self.calculate,
+            style="Accent.TButton",
+            width=22,
+        ).pack(pady=12)
 
     def calculate(self):
         try:
-            principal = float(self.inputs["principal_var"].get())
-            rate = float(self.inputs["rate_var"].get())
-            time_years = float(self.inputs["time_var"].get())
+            principal = float(self.principal_var.get())
+            rate = float(self.rate_var.get())
+            time_years = float(self.time_var.get())
             interest = calculate_simple_interest(principal, rate, time_years)
-            self.result_var.set(f"Interest: {interest:.2f}")
+            total_amount = principal + interest
+            self.result_var.set(
+                f"Interest: {interest:.2f} | Total amount after {time_years:.1f} years: {total_amount:.2f}"
+            )
         except ValueError:
-            self.result_var.set("Enter valid numbers")
+            self.result_var.set("Enter valid numbers for P, R, and N")
 
 
 if __name__ == "__main__":
