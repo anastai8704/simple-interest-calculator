@@ -7,7 +7,7 @@ from simple_interest_calculator import calculate_simple_interest
 class SimpleInterestApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Simple Interest Calculator")
+        self.root.title("Simple Interest Calculator Pro")
         self.root.geometry("420x280")
         self.root.resizable(False, False)
 
@@ -21,10 +21,10 @@ class SimpleInterestApp:
 
         title = tk.Label(
             self.root,
-            text="Simple Interest Calculator",
+            text="Simple Interest Calculator Pro",
             font=("Segoe UI", 20, "bold"),
             bg="#f4f7fb",
-            fg="#1f3c88",
+            fg="#5b2ca5",
         )
         title.pack(pady=(20, 10))
 
@@ -49,7 +49,7 @@ class SimpleInterestApp:
             fg="#d62828",
         ).pack(pady=10)
 
-        ttk.Button(self.root, text="Calculate", command=self.calculate, width=20).pack(pady=8)
+        ttk.Button(self.root, text="Calculate Interest", command=self.calculate, width=20).pack(pady=8)
 
     def calculate(self):
         try:
